@@ -5,7 +5,7 @@ const formEL = document.querySelector('.feedback-form');
 const KEY = 'feedback-form-state';
 const obj = {};
 
-const onload = () => {
+const onLoad = () => {
   if (localStorage.getItem(KEY)) {
     const localObj = JSON.parse(localStorage.getItem(KEY));
 
@@ -26,10 +26,13 @@ const throttledInput = throttle(onInputForm, 500);
 
 const clearStorage = event => {
   event.preventDefault();
+
+  console.log(JSON.parse(localStorage.getItem(KEY)));
+
   localStorage.removeItem(KEY);
   event.target.reset();
 };
 
 formEL.addEventListener('input', throttledInput);
 formEL.addEventListener('submit', clearStorage);
-addEventListener('load', onload);
+addEventListener('load', onLoad);
