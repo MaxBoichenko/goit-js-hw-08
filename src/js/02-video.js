@@ -18,16 +18,8 @@ const throttledFn = throttle(TimeChange, 1000, { trailing: false });
 player.on('timeupdate', throttledFn);
 player.on('ended', EndFn);
 
-player
-  .setCurrentTime(localStorage.getItem(KEY))
-  .then(function (seconds) {})
-  .catch(function (error) {
-    switch (error.name) {
-      case 'RangeError':
-        console.log(error.name);
-        break;
-      default:
-        console.log('some other error occurred');
-        break;
-    }
-  });
+const savedTime = localStorage.getItem(KEY);
+
+if (savedTime) {
+  player.setCurrentTime(savedTime);
+}

@@ -8,13 +8,10 @@ const obj = {};
 const onLoad = () => {
   if (localStorage.getItem(KEY)) {
     const localObj = JSON.parse(localStorage.getItem(KEY));
-
-    for (const key in localObj) {
-      if (Object.hasOwnProperty.call(localObj, key)) {
-        formEL.elements[key].value = localObj[key];
-        obj[key] = localObj[key];
-      }
-    }
+    Object.entries(localObj).forEach(([key, value]) => {
+      formEL.elements[key].value = value;
+      obj[key] = value;
+    });
   }
 };
 
@@ -27,12 +24,13 @@ const throttledInput = throttle(onInputForm, 500);
 const clearStorage = event => {
   event.preventDefault();
 
-  console.log(JSON.parse(localStorage.getItem(KEY)));
-
   localStorage.removeItem(KEY);
+  for (const prop of Object.getOwnPropertyNames(obj)) {
+    delete obj[prop];
+  }
   event.target.reset();
 };
 
 formEL.addEventListener('input', throttledInput);
 formEL.addEventListener('submit', clearStorage);
-addEventListener('load', onLoad);
+window.addEventListener('load', onLoad);
